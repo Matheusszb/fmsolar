@@ -24,7 +24,7 @@ export async function publicProjects(
   const db = await serverSupabase();
   let q = db
     .from('projects')
-    .select('*, project_images(*)', { count: 'exact' })
+    .select('*, project_images!project_images_project_id_fkey(*)', { count: 'exact' })
     .eq('status', 'published')
     .order('published_at', { ascending: false });
   if (options.featured) q = q.eq('featured', true);
@@ -44,7 +44,7 @@ export async function projectBySlug(slug: string) {
   const db = await serverSupabase();
   const { data, error } = await db
     .from('projects')
-    .select('*,project_images(*)')
+    .select('*,project_images!project_images_project_id_fkey(*)')
     .eq('slug', slug)
     .eq('status', 'published')
     .maybeSingle();

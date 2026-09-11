@@ -8,7 +8,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   const { id } = await params;
   const { data, error } = await db
     .from('projects')
-    .select('*,project_images(*)')
+    .select('*,project_images!project_images_project_id_fkey(*)')
     .eq('id', id)
     .maybeSingle();
   if (error) throw Error('Erro ao carregar prévia.');

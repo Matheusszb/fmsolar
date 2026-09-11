@@ -10,6 +10,10 @@ describe('migrations e autorização PostgreSQL', () => {
       );
       for (const file of ['001_initial.sql', '002_admin_functions.sql', '003_atomic_save.sql'])
         await db.exec(readFileSync(`supabase/migrations/${file}`, 'utf8'));
+      const galleryRelation = await db.query<{ conname: string }>(
+        `select conname from pg_constraint where conrelid='public.project_images'::regclass and confrelid='public.projects'::regclass and contype='f'`,
+      );
+      expect(galleryRelation.rows).toEqual([{ conname: 'project_images_project_id_fkey' }]);
       const admin = '00000000-0000-4000-8000-000000000001';
       const outsider = '00000000-0000-4000-8000-000000000002';
       const project = '00000000-0000-4000-8000-000000000003';
