@@ -2,25 +2,22 @@ import 'server-only';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { isSupabaseConfigured } from './config';
+import { isSupabaseConfigured, supabaseConfig } from './config';
 export async function serverSupabase() {
   const jar = await cookies();
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => jar.getAll(),
-        setAll: (values) => {
-          try {
-            values.forEach(({ name, value, options }) => jar.set(name, value, options));
-          } catch {
-            /* Proxy refreshes cookies during Server Component rendering. */
-          }
-        },
+  const { url, key } = supabaseConfig();
+  return createServerClient(url, key, {
+    cookies: {
+      getAll: () => jar.getAll(),
+      setAll: (values) => {
+        try {
+          values.forEach(({ name, value, options }) => jar.set(name, value, options));
+        } catch {
+          /* Proxy refreshes cookies during Server Component rendering. */
+        }
       },
     },
-  );
+  });
 }
 export async function requireAdmin() {
   if (!isSupabaseConfigured()) redirect('/admin?setup=1');
