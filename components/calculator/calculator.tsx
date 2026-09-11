@@ -1,5 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { AnimatedMoney } from './animated-money';
+import { Ambient } from '@/components/ui/ambient';
 import dynamic from 'next/dynamic';
 import { Calculator as CalculatorIcon, ArrowUpRight, ShieldCheck } from 'lucide-react';
 import { calculateSolar, parseCurrency, currency, decimal } from '@/lib/solarCalculator';
@@ -12,23 +14,28 @@ export function Calculator({ initial }: { initial: string }) {
   const [value, setValue] = useState(initial);
   const [connection, setConnection] = useState('Monofásica');
   const [property, setProperty] = useState('Residencial');
-  const [result, setResult] = useState<ReturnType<typeof calculateSolar> | null>(null);
-  const [lead, setLead] = useState({ connection, property });
+  const result = useMemo(() => {
+    try {
+      return calculateSolar(parseCurrency(value));
+    } catch {
+      return null;
+    }
+  }, [value]);
+  const lead = { connection, property };
   const [error, setError] = useState('');
   const message = result
     ? `Olá! Fiz uma simulação no site da FM SOLAR.\n\nConta média: ${currency(result.contaMensal)}\nTipo de ligação: ${lead.connection}\nTipo de imóvel: ${lead.property}\nSistema estimado: ${decimal(result.potenciaKwp)} kWp\nInvestimento estimado: ${currency(result.investimentoEstimado)}\n\nGostaria de receber uma análise técnica e um orçamento personalizado.`
     : undefined;
   return (
     <section className="section">
-      <div className="container calculator-layout">
+      <Ambient className="container calculator-layout">
         <aside>
           <form
             className="card calculator-form"
             onSubmit={(e) => {
               e.preventDefault();
               try {
-                setResult(calculateSolar(parseCurrency(value)));
-                setLead({ connection, property });
+                calculateSolar(parseCurrency(value));
                 setError('');
               } catch (e) {
                 setError(e instanceof Error ? e.message : 'Informe um valor válido.');
@@ -38,19 +45,48 @@ export function Calculator({ initial }: { initial: string }) {
             <span className="card-icon">
               <CalculatorIcon />
             </span>
-            <h2>O futuro da sua conta começa aqui.</h2>
-            <p>Uma estimativa clara para planejar seu próximo passo.</p>
+            <span className="eyebrow dark">SIMULE SEU FUTURO</span>
+            <h2>Descubra quanto você pode economizar</h2>
+            <p>Mova o controle ou informe sua conta. Veja sua economia em tempo real.</p>
             <label className="field">
               Valor médio da conta de luz (R$)
               <input
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                  setError('');
+                }}
                 placeholder="Ex.: 650"
                 inputMode="decimal"
                 required
                 aria-invalid={!!error}
               />
             </label>
+            <div className="solar-slider">
+              <label htmlFor="bill-slider">
+                Ajuste rápido da conta<span>{result ? currency(result.contaMensal) : 'R$ —'}</span>
+              </label>
+              <input
+                id="bill-slider"
+                aria-label="Ajuste rápido da conta"
+                type="range"
+                min={100}
+                max={10000}
+                step={50}
+                value={Math.max(100, Math.min(10000, result?.contaMensal || 100))}
+                style={{
+                  background: `linear-gradient(90deg,#bd8b30 0%,#ecd494 ${Math.max(0, Math.min(100, (((result?.contaMensal || 100) - 100) / 9900) * 100))}%,#e4e8ef ${Math.max(0, Math.min(100, (((result?.contaMensal || 100) - 100) / 9900) * 100))}%)`,
+                }}
+                onChange={(e) => {
+                  setValue(e.target.value);
+                  setError('');
+                }}
+              />
+              <div>
+                <span>R$ 100</span>
+                <span>R$ 10.000</span>
+              </div>
+            </div>
             <label className="field">
               Tipo de ligação
               <select value={connection} onChange={(e) => setConnection(e.target.value)}>
@@ -94,14 +130,14 @@ export function Calculator({ initial }: { initial: string }) {
             </a>
           </div>
         </aside>
-        <div aria-live="polite" className="calculator-results">
+        <div className="calculator-results">
           {!result ? (
             <div className="empty-state">
               <CalculatorIcon size={44} />
               <h2>Seu potencial de economia, em números.</h2>
               <p>
-                Preencha o formulário e clique em Calcular Economia para ver seus números e os
-                gráficos de retorno do investimento.
+                Informe o valor da sua conta para ver seus números e os gráficos de retorno do
+                investimento em tempo real.
               </p>
             </div>
           ) : (
@@ -110,29 +146,30 @@ export function Calculator({ initial }: { initial: string }) {
                 {[
                   [
                     'ECONOMIA MENSAL ESTIMADA',
-                    currency(result.economiaMensal),
+                    result.economiaMensal,
                     'Todos os meses, mais liberdade.',
                   ],
                   [
                     'ECONOMIA ANUAL ESTIMADA',
-                    currency(result.economiaAnual),
+                    result.economiaAnual,
                     'Economia estimada no primeiro ano.',
                   ],
                   [
                     'ACUMULADO EM 25 ANOS',
-                    currency(result.acumulado),
+                    result.acumulado,
                     'Projeção com reajuste energético de 8% a.a.',
                   ],
                   ['REDUÇÃO NA CONTA', 'até 80%', `Nova conta ≈ ${currency(result.novaConta)}/mês`],
                   [
                     'INVESTIMENTO ESTIMADO',
-                    currency(result.investimentoEstimado),
+                    result.investimentoEstimado,
                     `Sistema de ${decimal(result.potenciaKwp)} kWp`,
                   ],
+                  ['CONTA ATUAL', result.contaMensal, 'Sua conta média antes da energia solar.'],
                 ].map(([label, v, n], i) => (
                   <div className={`saving-card saving-${i}`} key={label}>
                     <span>{label}</span>
-                    <strong>{v}</strong>
+                    <strong>{typeof v === 'number' ? <AnimatedMoney value={v} /> : v}</strong>
                     <small>{n}</small>
                   </div>
                 ))}
@@ -163,7 +200,7 @@ export function Calculator({ initial }: { initial: string }) {
             </p>
           </div>
         </div>
-      </div>
+      </Ambient>
     </section>
   );
 }

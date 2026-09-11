@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { useInView, useReducedMotion, animate } from 'framer-motion';
+import { useInView, animate } from 'framer-motion';
+import { useReducedMotion } from '@/components/ui/use-reduced-motion';
 export function Counter({
   value,
   prefix = '',
@@ -17,7 +18,7 @@ export function Counter({
   useEffect(() => {
     if (!visible || reduced) return;
     const animation = animate(0, value, {
-      duration: 1.2,
+      duration: 1.65,
       onUpdate: (n) => setCount(Math.round(n)),
     });
     return () => animation.stop();

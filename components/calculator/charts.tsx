@@ -13,7 +13,9 @@ import {
   Bar,
 } from 'recharts';
 import { calculateSolar, currency, decimal } from '@/lib/solarCalculator';
+import { useReducedMotion } from '@/components/ui/use-reduced-motion';
 export default function Charts({ result: r }: { result: ReturnType<typeof calculateSolar> }) {
+  const reduced = useReducedMotion();
   const crossing = r.years.find((y) => y.acumulado >= r.investimentoEstimado)?.ano;
   return (
     <>
@@ -42,7 +44,8 @@ export default function Charts({ result: r }: { result: ReturnType<typeof calcul
                 stroke="#b88a2c"
                 fill="#dab35b"
                 fillOpacity={0.22}
-                isAnimationActive={false}
+                isAnimationActive={!reduced}
+                animationDuration={650}
               />
               <Line
                 dataKey="investimento"
@@ -50,7 +53,8 @@ export default function Charts({ result: r }: { result: ReturnType<typeof calcul
                 stroke="#192344"
                 dot={false}
                 strokeWidth={2}
-                isAnimationActive={false}
+                isAnimationActive={!reduced}
+                animationDuration={650}
               />
               {crossing && (
                 <ReferenceLine
@@ -69,7 +73,7 @@ export default function Charts({ result: r }: { result: ReturnType<typeof calcul
         </div>
       </div>
       <div className="chart-card">
-        <h3>Sua conta: hoje x com solar</h3>
+        <h3>Sua conta: sem energia solar × com energia solar</h3>
         <div className="chart compact">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
@@ -87,7 +91,8 @@ export default function Charts({ result: r }: { result: ReturnType<typeof calcul
                 name="Conta mensal"
                 radius={[6, 6, 0, 0]}
                 maxBarSize={95}
-                isAnimationActive={false}
+                isAnimationActive={!reduced}
+                animationDuration={650}
               />
             </BarChart>
           </ResponsiveContainer>

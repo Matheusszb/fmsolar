@@ -58,6 +58,7 @@ export function Footer() {
         rel="noopener noreferrer"
       >
         <MessageCircle size={27} />
+        <span>Fale com um especialista</span>
       </a>
     </>
   );

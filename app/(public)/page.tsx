@@ -16,7 +16,7 @@ export default async function Home() {
             <div className="section-head">
               <div>
                 <span className="eyebrow dark">ENGENHARIA NA PRÁTICA</span>
-                <h2>Projetos que já estão gerando economia</h2>
+                <h2>Energia gerada na prática</h2>
                 <p>Conheça algumas instalações realizadas pela FM SOLAR.</p>
               </div>
               <Link href="/obras" className="button light">
@@ -24,8 +24,8 @@ export default async function Home() {
               </Link>
             </div>
             <div className="grid-3">
-              {result.projects.map((p) => (
-                <ProjectCard key={p.id} project={p} />
+              {result.projects.map((p, i) => (
+                <ProjectCard key={p.id} project={p} index={i} />
               ))}
             </div>
           </div>

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Counter } from './counter';
+import Image from 'next/image';
 import {
   ShieldCheck,
   Ruler,
@@ -12,20 +12,86 @@ import {
   MapPin,
   Phone,
   ArrowUpRight,
+  Leaf,
+  TrendingDown,
+  ChartNoAxesCombined,
 } from 'lucide-react';
 import { Reveal } from '@/components/ui/reveal';
+import { Ambient, ParallaxPhoto } from '@/components/ui/ambient';
 import { company, whatsappUrl } from '@/config/company';
+import { Counter } from './counter';
+import { Timeline } from './timeline';
+import { Testimonials } from './testimonials';
+import { FAQ } from './faq';
+const differentials = [
+  {
+    Icon: ShieldCheck,
+    title: 'Engenharia Especializada',
+    description: 'Time de engenheiros eletricistas responsável por cada projeto.',
+  },
+  {
+    Icon: Ruler,
+    title: 'Projetos Personalizados',
+    description: 'Dimensionamento sob medida para o seu consumo e telhado.',
+  },
+  {
+    Icon: FileCheck,
+    title: 'Homologação Rápida',
+    description: 'Cuidamos de toda a documentação junto à concessionária.',
+  },
+  {
+    Icon: BadgeCheck,
+    title: 'Garantia dos Equipamentos',
+    description: 'Módulos e inversores com garantia de fábrica e suporte local.',
+  },
+];
+const services = [
+  {
+    Icon: House,
+    title: 'Instalação Residencial',
+    description: 'Reduza até 85% da conta de luz da sua casa com sistema dimensionado.',
+    image: '/solar-hero.jpg',
+  },
+  {
+    Icon: Building2,
+    title: 'Projetos Comerciais e Industriais',
+    description: 'Alta potência, análise de demanda e retorno acelerado.',
+    image: '/images/solar-aerial.webp',
+  },
+  {
+    Icon: Tractor,
+    title: 'Sistemas para Zona Rural',
+    description: 'Bombeamento, irrigação e estruturas em solo para propriedades.',
+    image: '/images/solar-field.webp',
+  },
+  {
+    Icon: Wrench,
+    title: 'Manutenção e Laudos Técnicos',
+    description: 'Inspeção termográfica, limpeza, ART e laudos de conformidade.',
+    image: '/solar-hero.jpg',
+  },
+];
 export function FinalCTA() {
   return (
     <section className="final-cta">
-      <span className="eyebrow" style={{ justifyContent: 'center' }}>
-        UM NOVO CAPÍTULO PARA SUA ENERGIA
-      </span>
-      <h2>Sua economia começa com um bom projeto.</h2>
-      <p>Receba uma análise personalizada para descobrir o sistema ideal para seu imóvel.</p>
-      <a className="button gold" href={whatsappUrl()} target="_blank" rel="noreferrer">
-        Solicitar análise gratuita <ArrowUpRight size={18} />
-      </a>
+      <ParallaxPhoto />
+      <Ambient className="final-cta-inner">
+        <div className="cta-light" aria-hidden="true" />
+        <Reveal>
+          <span className="eyebrow">O FUTURO É SOLAR. E PODE SER SEU.</span>
+          <h2>Sua conta de energia não precisa continuar aumentando.</h2>
+          <p>
+            Sua economia começa com um bom projeto. Receba uma análise personalizada para descobrir
+            o sistema ideal para seu imóvel.
+          </p>
+          <a className="button gold" href={whatsappUrl()} target="_blank" rel="noreferrer">
+            Solicitar análise gratuita <ArrowUpRight size={19} />
+          </a>
+          <span className="cta-assurance">
+            <ShieldCheck size={16} /> Engenharia responsável, do início ao fim.
+          </span>
+        </Reveal>
+      </Ambient>
     </section>
   );
 }
@@ -35,144 +101,167 @@ export function HomeSections() {
       <section className="stats-strip">
         <div className="container stats-grid">
           {[
-            ['+480', 'sistemas instalados'],
-            ['+ de 1 MWp', 'potência entregue'],
-            ['25 anos', 'de geração estimada'],
-          ].map(([n, t]) => (
-            <Reveal className="stat" key={t}>
-              {n === '+480' ? (
-                <Counter value={480} prefix="+" />
-              ) : n === '25 anos' ? (
-                <Counter value={25} suffix=" anos" />
-              ) : (
-                <strong>{n}</strong>
-              )}
-              <span>{t}</span>
+            { value: 480, prefix: '+', suffix: '', label: 'sistemas instalados' },
+            { value: 1, prefix: '+ de ', suffix: ' MWp', label: 'potência entregue' },
+            { value: 85, prefix: 'até ', suffix: '%', label: 'de economia potencial*' },
+            { value: 25, prefix: '', suffix: ' anos', label: 'de geração estimada' },
+          ].map((s, i) => (
+            <Reveal className="stat" delay={i * 0.08} key={s.label}>
+              <Counter value={s.value} prefix={s.prefix} suffix={s.suffix} />
+              <span>{s.label}</span>
             </Reveal>
           ))}
         </div>
       </section>
-      <section className="section" id="diferenciais">
-        <div className="container">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow dark">01 / ENGENHARIA QUE FAZ A DIFERENÇA</span>
-              <h2>Diferenciais técnicos</h2>
-              <p>Não vendemos apenas placas: entregamos engenharia responsável do início ao fim.</p>
-            </div>
-          </div>
-          <div className="grid-4">
+      <section className="section benefits-section">
+        <div className="container benefits-layout">
+          <Reveal className="benefits-intro" variant="side">
+            <span className="eyebrow dark">UMA ESCOLHA INTELIGENTE. TODOS OS DIAS.</span>
+            <h2>
+              Mais que economia.
+              <br />
+              <span>
+                Uma nova relação
+                <br />
+                com a energia.
+              </span>
+            </h2>
+            <p>Transforme a luz que chega ao seu imóvel em possibilidades para o seu futuro.</p>
+            <Link href="/calculadora" className="text-link">
+              Explore seu potencial de economia <ArrowUpRight size={19} />
+            </Link>
+          </Reveal>
+          <div className="benefit-list">
             {[
-              [
-                ShieldCheck,
-                'Engenharia Especializada',
-                'Time de engenheiros eletricistas responsável por cada projeto.',
-              ],
-              [
-                Ruler,
-                'Projetos Personalizados',
-                'Dimensionamento sob medida para o seu consumo e telhado.',
-              ],
-              [
-                FileCheck,
-                'Homologação Rápida',
-                'Cuidamos de toda a documentação junto à concessionária.',
-              ],
-              [
-                BadgeCheck,
-                'Garantia dos Equipamentos',
-                'Módulos e inversores com garantia de fábrica e suporte local.',
-              ],
-            ].map(([Icon, title, desc]) => {
-              const I = Icon as typeof ShieldCheck;
-              return (
-                <Reveal className="card" key={String(title)}>
-                  <span className="card-icon">
-                    <I />
-                  </span>
-                  <h3>{String(title)}</h3>
-                  <p>{String(desc)}</p>
-                </Reveal>
-              );
-            })}
+              {
+                Icon: TrendingDown,
+                title: 'Redução da conta',
+                text: 'Menos gastos com energia, mais espaço para seus planos.',
+              },
+              {
+                Icon: House,
+                title: 'Valorização do imóvel',
+                text: 'Tecnologia e infraestrutura energética incorporadas ao seu patrimônio.',
+              },
+              {
+                Icon: Leaf,
+                title: 'Energia limpa',
+                text: 'Aproveite uma fonte renovável disponível todos os dias.',
+              },
+              {
+                Icon: ChartNoAxesCombined,
+                title: 'Mais previsibilidade',
+                text: 'Planeje sua energia com um sistema dimensionado para seu consumo.',
+              },
+              {
+                Icon: ShieldCheck,
+                title: 'Garantia e suporte',
+                text: 'Equipamentos com garantia de fábrica e acompanhamento técnico.',
+              },
+            ].map(({ Icon, title, text }, i) => (
+              <Reveal className="benefit-row" delay={i * 0.065} key={title}>
+                <span className="benefit-number">0{i + 1}</span>
+                <Icon size={22} />
+                <div>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </div>
+                <ArrowUpRight className="benefit-arrow" size={20} />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section differentials-section" id="diferenciais">
+        <div className="technical-grid" aria-hidden="true" />
+        <div className="container">
+          <Reveal className="section-head">
+            <div>
+              <span className="eyebrow">01 / ENGENHARIA QUE FAZ A DIFERENÇA</span>
+              <h2>Diferenciais técnicos</h2>
+            </div>
+            <p>Não vendemos apenas placas: entregamos engenharia responsável do início ao fim.</p>
+          </Reveal>
+          <div className="grid-4">
+            {differentials.map(({ Icon, title, description }, i) => (
+              <Reveal className="card differential-card" delay={i * 0.09} key={title}>
+                <span className="differential-index">0{i + 1}</span>
+                <span className="card-icon">
+                  <Icon size={27} />
+                </span>
+                <h3>{title}</h3>
+                <p>{description}</p>
+                <span className="card-rule" />
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
       <section className="section services" id="servicos">
         <div className="container">
-          <div className="section-head">
+          <Reveal className="section-head">
             <div>
-              <span className="eyebrow">02 / SOLUÇÕES PARA CADA REALIDADE</span>
+              <span className="eyebrow dark">02 / SOLUÇÕES PARA CADA REALIDADE</span>
               <h2>Nossos serviços</h2>
-              <p>Seu consumo é único. Seu projeto também deve ser.</p>
             </div>
-          </div>
-          <div className="grid-4">
-            {[
-              [
-                House,
-                'Instalação Residencial',
-                'Reduza até 85% da conta de luz da sua casa com sistema dimensionado.',
-              ],
-              [
-                Building2,
-                'Projetos Comerciais e Industriais',
-                'Alta potência, análise de demanda e retorno acelerado.',
-              ],
-              [
-                Tractor,
-                'Sistemas para Zona Rural',
-                'Bombeamento, irrigação e estruturas em solo para propriedades.',
-              ],
-              [
-                Wrench,
-                'Manutenção e Laudos Técnicos',
-                'Inspeção termográfica, limpeza, ART e laudos de conformidade.',
-              ],
-            ].map(([Icon, title, desc]) => {
-              const I = Icon as typeof House;
-              return (
+            <p>
+              Seu consumo é único.
+              <br />
+              Seu projeto também deve ser.
+            </p>
+          </Reveal>
+          <div className="grid-4 services-grid">
+            {services.map(({ Icon, title, description, image }, i) => (
+              <Reveal variant="image" delay={i * 0.07} key={title}>
                 <a
-                  className="service-card"
+                  className={`service-card service-photo service-${i}`}
                   href={whatsappUrl(`Olá! Tenho interesse em ${title}.`)}
                   target="_blank"
                   rel="noreferrer"
-                  key={String(title)}
                 >
-                  <I size={29} />
-                  <h3>{String(title)}</h3>
-                  <p>{String(desc)}</p>
-                  <span className="service-link">
-                    Conversar sobre meu projeto <ArrowUpRight size={17} />
+                  <Image
+                    src={image}
+                    alt=""
+                    fill
+                    sizes="(max-width:600px) 100vw,(max-width:1000px) 50vw,25vw"
+                    unoptimized
+                  />
+                  <span className="service-overlay" />
+                  <span className="service-top">
+                    <span>0{i + 1}</span>
+                    <Icon size={26} />
                   </span>
+                  <div className="service-content">
+                    <h3>{title}</h3>
+                    <p>{description}</p>
+                    <span className="service-link">
+                      Vamos conversar <ArrowUpRight size={20} />
+                    </span>
+                  </div>
                 </a>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-      <section className="section" id="como-funciona">
-        <div className="container">
-          <div className="section-head">
-            <div>
-              <span className="eyebrow dark">03 / CLAREZA EM CADA ETAPA</span>
-              <h2>Passo a passo do seu projeto</h2>
-            </div>
-          </div>
-          <div className="process">
-            {[
-              ['Vistoria Técnica', 'Avaliação do telhado, padrão de entrada e consumo.'],
-              ['Engenharia e Projeto', 'Dimensionamento, memorial e diagramas assinados.'],
-              ['Aprovação na Concessionária', 'Protocolo, acompanhamento e parecer de acesso.'],
-              ['Instalação Final', 'Montagem, comissionamento e monitoramento do sistema.'],
-            ].map(([t, d], i) => (
-              <Reveal className="process-step" key={t}>
-                <span className="step-number">0{i + 1}</span>
-                <h3>{t}</h3>
-                <p>{d}</p>
               </Reveal>
             ))}
           </div>
+          <p className="image-disclaimer">
+            Imagens ilustrativas. Conheça as instalações da FM SOLAR em{' '}
+            <Link href="/obras">nossas obras</Link>.
+          </p>
+        </div>
+      </section>
+      <section className="section process-section" id="como-funciona">
+        <div className="container">
+          <Reveal className="section-head">
+            <div>
+              <span className="eyebrow dark">03 / DA PRIMEIRA CONVERSA À GERAÇÃO</span>
+              <h2>Passo a passo do seu projeto</h2>
+            </div>
+            <p>
+              Uma jornada simples para você.
+              <br />
+              Engenharia precisa em cada etapa.
+            </p>
+          </Reveal>
+          <Timeline />
         </div>
       </section>
     </>
@@ -181,77 +270,66 @@ export function HomeSections() {
 export function HomeBottom() {
   return (
     <>
-      <section className="section">
-        <div className="container calculator-preview">
-          <div>
-            <span className="eyebrow dark">SEU PRÓXIMO INVESTIMENTO COMEÇA AQUI</span>
+      <section className="section quick-calculator-section">
+        <Ambient className="container calculator-preview">
+          <Reveal variant="side">
+            <span className="eyebrow">SEU PRÓXIMO INVESTIMENTO COMEÇA AQUI</span>
             <h2>Descubra quanto você pode economizar com energia solar</h2>
             <p>
               Informe o valor da sua conta e veja uma estimativa de economia, investimento e
               retorno.
             </p>
-          </div>
-          <form action="/calculadora" className="quick-form">
-            <label className="field">
-              Valor médio da conta de luz
-              <input name="conta" placeholder="650" inputMode="decimal" required />
-            </label>
-            <button className="button navy">
-              Calcular minha economia <ArrowUpRight size={18} />
-            </button>
-          </form>
-        </div>
+            <span className="calculator-decor" aria-hidden="true">
+              80<small>%</small>
+            </span>
+          </Reveal>
+          <Reveal className="quick-form-shell" delay={0.15}>
+            <form action="/calculadora" className="quick-form">
+              <span className="eyebrow dark">O SOL TRABALHA. VOCÊ ECONOMIZA.</span>
+              <label className="field">
+                Valor médio da conta de luz
+                <div className="quick-input">
+                  <span>R$</span>
+                  <input name="conta" placeholder="650" inputMode="decimal" required />
+                </div>
+              </label>
+              <button className="button gold">
+                Calcular minha economia <ArrowUpRight size={19} />
+              </button>
+              <small>Uma estimativa em segundos. Sem cadastro.</small>
+            </form>
+          </Reveal>
+        </Ambient>
       </section>
       <section className="section white" id="clientes">
         <div className="container">
-          <div className="section-head">
+          <Reveal className="section-head">
             <div>
-              <span className="eyebrow dark">CONFIANÇA QUE SE RENOVA</span>
+              <span className="eyebrow dark">QUEM ESCOLHEU UM FUTURO SOLAR</span>
               <h2>O que dizem nossos clientes</h2>
             </div>
-          </div>
-          <div className="grid-3">
-            {[
-              [
-                'Minha conta de luz era R$ 1.200, hoje pago praticamente só a taxa mínima. Melhor investimento que fiz na propriedade.',
-                'José Alves',
-                'Gurupi - TO',
-              ],
-              [
-                'A FM SOLAR fez todo o projeto, homologação e instalou o sistema para irrigação. Atendimento técnico de verdade.',
-                'Fazenda São João',
-                'Porto Nacional - TO',
-              ],
-              [
-                'Equipe pontual, projeto bem explicado e instalação limpa. Recomendo para quem quer energia solar com segurança.',
-                'Maria Helena',
-                'Palmas - TO',
-              ],
-            ].map(([q, n, l]) => (
-              <Reveal className="card" key={n}>
-                <span className="stars" aria-label="5 estrelas">
-                  ★★★★★
-                </span>
-                <p className="quote">“{q}”</p>
-                <div className="client-name">
-                  <span className="avatar">
-                    {n
-                      .split(' ')
-                      .map((s) => s[0])
-                      .slice(0, 2)
-                      .join('')}
-                  </span>
-                  <div>
-                    <strong>{n}</strong>
-                    <small>{l}</small>
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          </Reveal>
+          <Testimonials />
         </div>
       </section>
-      <section className="section" id="contato">
+      <section className="section faq-section" id="duvidas">
+        <div className="container faq-layout">
+          <Reveal variant="side">
+            <span className="eyebrow dark">CLAREZA PARA DECIDIR</span>
+            <h2>
+              Boas perguntas.
+              <br />
+              Respostas claras.
+            </h2>
+            <p>Entenda o próximo passo para gerar sua própria energia.</p>
+            <a className="text-link" href={whatsappUrl()}>
+              Fale com um engenheiro <ArrowUpRight size={18} />
+            </a>
+          </Reveal>
+          <FAQ />
+        </div>
+      </section>
+      <section className="section contact-section" id="contato">
         <div className="container contact-grid">
           <div className="contact-card">
             <MapPin />

@@ -1,19 +1,21 @@
 'use client';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { Menu, X, ArrowUpRight, Phone } from 'lucide-react';
+import { Menu, X, ArrowUpRight, MessageCircle } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { Brand } from './brand';
-import { company, whatsappUrl } from '@/config/company';
+import { whatsappUrl } from '@/config/company';
 const links = [
   ['Início', '/'],
-  ['Obras', '/obras'],
-  ['Calculadora', '/calculadora'],
-  ['Diferenciais', '/#diferenciais'],
   ['Serviços', '/#servicos'],
   ['Como funciona', '/#como-funciona'],
-  ['Clientes', '/#clientes'],
+  ['Obras', '/obras'],
+  ['Calculadora', '/calculadora'],
+  ['Depoimentos', '/#clientes'],
 ];
+const analysisUrl = whatsappUrl(
+  'Olá! Quero solicitar uma análise gratuita para instalação de energia solar.',
+);
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -25,7 +27,9 @@ export function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
   return (
-    <header className={`site-header ${scrolled ? 'scrolled' : ''}`}>
+    <header
+      className={`site-header ${scrolled ? 'scrolled' : ''} ${pathname === '/' ? 'header-home' : ''}`}
+    >
       <div className="container header-inner">
         <Brand />
         <nav className="desktop-nav" aria-label="Navegação principal">
@@ -36,28 +40,35 @@ export function Header() {
           ))}
         </nav>
         <div className="header-contact">
-          <a className="phone-link" href={`tel:${company.phoneRaw}`}>
-            <Phone size={13} />
-            {company.phone}
-          </a>
           <a
             className="button gold small"
-            href={whatsappUrl()}
+            href={analysisUrl}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Falar no WhatsApp <ArrowUpRight size={16} />
+            Solicitar análise gratuita <ArrowUpRight size={16} />
           </a>
         </div>
-        <button
-          className="icon-button mobile-toggle"
-          aria-label="Abrir menu"
-          onClick={() => dialog.current?.showModal()}
-        >
-          <Menu />
-        </button>
+        <div className="mobile-header-actions">
+          <a
+            className="icon-button mobile-whatsapp"
+            href={analysisUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Solicitar análise gratuita pelo WhatsApp"
+          >
+            <MessageCircle size={21} />
+          </a>
+          <button
+            className="icon-button mobile-toggle"
+            aria-label="Abrir menu"
+            onClick={() => dialog.current?.showModal()}
+          >
+            <Menu />
+          </button>
+        </div>
       </div>
-      <dialog ref={dialog} className="mobile-menu">
+      <dialog ref={dialog} className="mobile-menu" aria-label="Menu de navegação">
         <div className="dialog-top">
           <Brand />
           <button
@@ -76,8 +87,8 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <a className="button gold" href={whatsappUrl()} target="_blank" rel="noopener noreferrer">
-          Falar no WhatsApp
+        <a className="button gold" href={analysisUrl} target="_blank" rel="noopener noreferrer">
+          Solicitar análise gratuita <ArrowUpRight size={16} />
         </a>
       </dialog>
     </header>

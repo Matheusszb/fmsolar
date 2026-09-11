@@ -104,8 +104,8 @@ export function ProjectsBrowser({ initial }: { initial: { projects: Project[]; c
             </div>
           ) : (
             <div className="grid-3">
-              {data.projects.map((p) => (
-                <ProjectCard project={p} key={p.id} />
+              {data.projects.map((p, i) => (
+                <ProjectCard project={p} key={p.id} index={i} />
               ))}
             </div>
           )}
