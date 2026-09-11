@@ -34,15 +34,34 @@ export function Login({ configured }: { configured: boolean }) {
             try {
               const db = browserSupabase();
               const { data, error } = await db.auth.signInWithPassword({
-                email: String(f.get('email')),
+                email: String(f.get('email')).trim(),
                 password: String(f.get('password')),
               });
-              if (error || !data.user) throw Error('E-mail ou senha inválidos. Tente novamente.');
-              const { data: profile } = await db
+              if (error) {
+                if (error.code === 'invalid_credentials')
+                  throw Error(
+                    'E-mail ou senha inválidos. Confira os dados digitados e o preenchimento automático.',
+                  );
+                if (error.code === 'email_not_confirmed')
+                  throw Error('Confirme seu e-mail antes de entrar.');
+                if (error.status === 429)
+                  throw Error(
+                    'Muitas tentativas de acesso. Aguarde alguns minutos e tente novamente.',
+                  );
+                throw Error(
+                  'Não foi possível conectar ao serviço de login. Tente novamente em instantes.',
+                );
+              }
+              if (!data.user) throw Error('Não foi possível iniciar a sessão. Tente novamente.');
+              const { data: profile, error: profileError } = await db
                 .from('profiles')
                 .select('role')
                 .eq('id', data.user.id)
                 .single();
+              if (profileError && profileError.code !== 'PGRST116')
+                throw Error(
+                  'Login aceito, mas não foi possível verificar sua permissão. Tente novamente.',
+                );
               if (profile?.role !== 'admin') {
                 await db.auth.signOut();
                 throw Error('Este usuário não tem acesso administrativo.');
