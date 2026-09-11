@@ -18,7 +18,14 @@ export const metadata: Metadata = {
     siteName: company.companyName,
     title: 'FM SOLAR | Energia Sustentável',
     description: 'Engenharia que transforma o sol em liberdade para você.',
-    images: [{ url: company.logo, width: 2481, height: 2481, alt: company.companyName }],
+    images: [
+      {
+        url: company.logo,
+        width: company.logoWidth,
+        height: company.logoHeight,
+        alt: company.companyName,
+      },
+    ],
   },
   twitter: { card: 'summary_large_image' },
 };

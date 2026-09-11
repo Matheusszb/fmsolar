@@ -8,8 +8,8 @@ export function Brand() {
         <Image
           src={company.logo}
           alt="FM SOLAR - Energia Sustentável"
-          width={2481}
-          height={2481}
+          width={company.logoWidth}
+          height={company.logoHeight}
           sizes="200px"
           unoptimized
           priority
