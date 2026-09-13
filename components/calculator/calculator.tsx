@@ -159,7 +159,7 @@ export function Calculator({ initial }: { initial: string }) {
                     result.acumulado,
                     'Projeção com reajuste energético de 8% a.a.',
                   ],
-                  ['REDUÇÃO NA CONTA', 'até 80%', `Nova conta ≈ ${currency(result.novaConta)}/mês`],
+                  ['REDUÇÃO NA CONTA', 'até 85%', `Nova conta ≈ ${currency(result.novaConta)}/mês`],
                   [
                     'INVESTIMENTO ESTIMADO',
                     result.investimentoEstimado,
@@ -195,7 +195,7 @@ export function Calculator({ initial }: { initial: string }) {
             </p>
             <p>
               Premissas: tarifa de R$ 1,00/kWh, produção de 165 kWh/kWp por mês, custo de R$
-              2.495,30/kWp e redução estimada de 80%. Payback simples; a projeção não desconta
+              2.495,30/kWp e redução estimada de 85%. Payback simples; a projeção não desconta
               manutenção, degradação, financiamento ou valor do dinheiro no tempo.
             </p>
           </div>

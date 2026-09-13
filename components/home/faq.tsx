@@ -6,7 +6,7 @@ import { Plus } from 'lucide-react';
 const questions = [
   [
     'Quanto posso economizar com energia solar?',
-    'O potencial depende do seu consumo, da tarifa e do dimensionamento. A calculadora da FM SOLAR utiliza redução estimada de 80%; a análise técnica identifica o potencial real do seu imóvel.',
+    'O potencial depende do seu consumo, da tarifa e do dimensionamento. A calculadora da FM SOLAR utiliza redução estimada de 85%; a análise técnica identifica o potencial real do seu imóvel.',
   ],
   [
     'A estimativa da calculadora já é um orçamento?',

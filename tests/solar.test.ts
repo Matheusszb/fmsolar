@@ -4,17 +4,17 @@ import { slugify } from '../lib/projects/slug';
 describe('calculadora FM SOLAR', () => {
   it('confere a simulação de R$ 2.000', () => {
     const r = calculateSolar(parseCurrency('R$ 2.000'));
-    expect(r.economiaMensal).toBe(1600);
-    expect(r.novaConta).toBe(400);
-    expect(r.economiaAnual).toBe(19200);
+    expect(r.economiaMensal).toBe(1700);
+    expect(r.novaConta).toBe(300);
+    expect(r.economiaAnual).toBe(20400);
     expect(r.consumoMensalKwh).toBe(2000);
     expect(r.potenciaKwp).toBe(12.1);
     expect(r.investimentoEstimado).toBeCloseTo(30193.13, 2);
-    expect(r.paybackAnos).toBeCloseTo(1.5726, 3);
-    expect(r.acumulado).toBeCloseTo(1403634.05, 0);
+    expect(r.paybackAnos).toBeCloseTo(1.4801, 3);
+    expect(r.acumulado).toBeCloseTo(1491361.18, 0);
     expect(r.years).toHaveLength(25);
-    expect(r.years[0].economia).toBe(19200);
-    expect(r.years[1].economia).toBeCloseTo(20736);
+    expect(r.years[0].economia).toBe(20400);
+    expect(r.years[1].economia).toBeCloseTo(22032);
     expect(r.years[24].acumulado).toBe(r.acumulado);
   });
   it.each(['650', '650,00', 'R$ 650,00'])('normaliza %s', (v) =>

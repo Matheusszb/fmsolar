@@ -15,6 +15,11 @@ import {
   Leaf,
   TrendingDown,
   ChartNoAxesCombined,
+  Zap,
+  Smartphone,
+  HardHat,
+  Settings2,
+  PiggyBank,
 } from 'lucide-react';
 import { Reveal } from '@/components/ui/reveal';
 import { Ambient, ParallaxPhoto } from '@/components/ui/ambient';
@@ -158,6 +163,31 @@ export function HomeSections() {
                 title: 'Garantia e suporte',
                 text: 'Equipamentos com garantia de fábrica e acompanhamento técnico.',
               },
+              {
+                Icon: Zap,
+                title: 'Independência energética',
+                text: 'Tenha mais controle sobre seus custos e sua geração de energia',
+              },
+              {
+                Icon: Smartphone,
+                title: 'Monitoramento em tempo real',
+                text: 'Acompanhe a geração e o desempenho do seu sistema pelo celular.',
+              },
+              {
+                Icon: HardHat,
+                title: 'Instalação segura e profissional',
+                text: 'Projeto, instalação e comissionamento seguindo critérios técnicos e de segurança.',
+              },
+              {
+                Icon: Settings2,
+                title: 'Baixa manutenção',
+                text: 'Sistema desenvolvido para operar por muitos anos com manutenção preventiva simplificada.',
+              },
+              {
+                Icon: PiggyBank,
+                title: 'Retorno sobre o investimento',
+                text: 'Transforme parte do gasto mensal com energia em um investimento de médio e longo prazo.',
+              },
             ].map(({ Icon, title, text }, i) => (
               <Reveal className="benefit-row" delay={i * 0.065} key={title}>
                 <span className="benefit-number">0{i + 1}</span>
@@ -192,6 +222,31 @@ export function HomeSections() {
                 <h3>{title}</h3>
                 <p>{description}</p>
                 <span className="card-rule" />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section partners-section" id="marcas-parceiras">
+        <div className="container">
+          <Reveal className="section-head">
+            <div>
+              <span className="eyebrow dark">04 / PARCERIAS DE CONFIANÇA</span>
+              <h2>Marcas parceiras</h2>
+            </div>
+            <p>Trabalhamos com fabricantes reconhecidos para entregar soluções seguras e eficientes.</p>
+          </Reveal>
+          <div className="partners-grid">
+            {[
+              ['Microinversores', 'Hoymiles · GoodWe · Deye'],
+              ['Módulos fotovoltaicos (painéis solares)', 'Gokin Solar · Jinko Solar · JA Solar · Risen Energy · Ronma Solar · TSUN · Trina Solar · LONGi Solar · Maxeon · DMEGC Solar · TCL Solar · Astronergy'],
+              ['Inversores híbridos', 'Deye · Huawei · Sungrow · Solis · GoodWe · MUST · Solplanet'],
+              ['Inversores off-grid', 'MUST'],
+            ].map(([category, brands], i) => (
+              <Reveal className="partner-card" delay={i * 0.08} key={category}>
+                <span className="partner-index">0{i + 1}</span>
+                <h3>{category}</h3>
+                <p>{brands}</p>
               </Reveal>
             ))}
           </div>
@@ -274,13 +329,13 @@ export function HomeBottom() {
         <Ambient className="container calculator-preview">
           <Reveal variant="side">
             <span className="eyebrow">SEU PRÓXIMO INVESTIMENTO COMEÇA AQUI</span>
-            <h2>Descubra quanto você pode economizar com energia solar</h2>
+            <h2>Sua liberdade energética começa aqui: transforme sua conta de luz em investimento.</h2>
             <p>
-              Informe o valor da sua conta e veja uma estimativa de economia, investimento e
-              retorno.
+              Insira o valor da sua fatura e confira na hora a economia estimada, o investimento e o
+              tempo de retorno.
             </p>
             <span className="calculator-decor" aria-hidden="true">
-              80<small>%</small>
+              85<small>%</small>
             </span>
           </Reveal>
           <Reveal className="quick-form-shell" delay={0.15}>
