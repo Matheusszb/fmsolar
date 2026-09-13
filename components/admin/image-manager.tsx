@@ -32,6 +32,7 @@ type Props = {
   setAfter: (v: string | null) => void;
   setUploading: (v: boolean) => void;
   disabled: boolean;
+  onBeforeUpload?: () => Promise<string | undefined>;
 };
 async function optimize(file: File) {
   if (
@@ -98,6 +99,12 @@ export function ImageManager(p: Props) {
   );
   async function upload(files: FileList | File[]) {
     if (busy || p.disabled) return;
+    let projectId = p.projectId;
+    if (!projectId && p.onBeforeUpload) {
+      const draftId = await p.onBeforeUpload();
+      if (!draftId) return;
+      projectId = draftId;
+    }
     setBusy(true);
     p.setUploading(true);
     let current = [...p.images];
@@ -110,7 +117,7 @@ export function ImageManager(p: Props) {
         try {
           const optimized = await optimize(file);
           const im = await uploadFile(
-            `/api/admin/projects/${p.projectId}/images`,
+            `/api/admin/projects/${projectId}/images`,
             optimized,
             setProgress,
           );

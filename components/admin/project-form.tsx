@@ -61,8 +61,8 @@ export function ProjectForm({ initial }: { initial?: Project }) {
       document.removeEventListener('click', links, true);
     };
   }, [dirty, uploading]);
-  async function save(status: 'draft' | 'published') {
-    if (busy || uploading) return;
+  async function save(status: 'draft' | 'published'): Promise<string | undefined> {
+    if (busy || uploading) return undefined;
     setBusy(true);
     setError('');
     setMsg('');
@@ -124,6 +124,7 @@ export function ProjectForm({ initial }: { initial?: Project }) {
         router.replace(`/admin/obras/${savedId}/editar`);
       }
       router.refresh();
+      return savedId;
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Erro ao salvar.');
     } finally {
@@ -304,6 +305,15 @@ export function ProjectForm({ initial }: { initial?: Project }) {
               }}
               setUploading={setUploading}
               disabled={busy}
+              onBeforeUpload={async () => {
+                if (id) return id;
+                const titleValue = String(new FormData(form.current!).get('title') || '').trim();
+                if (titleValue.length < 3) {
+                  setError('Informe um título com pelo menos 3 caracteres antes de enviar fotos.');
+                  return undefined;
+                }
+                return save('draft');
+              }}
             />
           ) : (
             <div className="notice">
