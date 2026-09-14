@@ -39,7 +39,7 @@ test('FAQ, depoimentos, timeline e movimento reduzido', async ({ page }) => {
   await expect(faq).toHaveAttribute('aria-expanded', 'true');
   await expect(page.getByRole('region', { name: /A FM SOLAR cuida da homologação/ })).toBeVisible();
   await page.getByRole('button', { name: 'Próximo depoimento' }).click();
-  await expect(page.locator('.testimonial-author')).toContainText('Agroenergia Vale do Tocantins');
+  await expect(page.locator('.testimonial-author')).toContainText('Carlos Eduardo Almeida');
   expect(
     await page.locator('.hero-metric').evaluate((e) => getComputedStyle(e).animationName),
   ).toBe('none');

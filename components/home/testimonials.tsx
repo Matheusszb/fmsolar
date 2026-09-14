@@ -13,7 +13,7 @@ const testimonials = [
   {
     quote:
       'A FM SOLAR fez todo o projeto, homologação e instalou o sistema para irrigação. Atendimento técnico de verdade.',
-    name: 'Agroenergia Vale do Tocantins',
+    name: 'Carlos Eduardo Almeida',
     location: 'Porto Nacional - TO',
   },
   {
