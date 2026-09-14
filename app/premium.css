@@ -1488,6 +1488,42 @@
   font-size: 11px;
   line-height: 1.9;
 }
+.public-site .calculator-summary {
+  padding: 30px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #172943, #213a5c);
+  color: white;
+  box-shadow: 0 12px 30px #13244314;
+}
+.public-site .calculator-summary .eyebrow {
+  color: #f0cf86;
+}
+.public-site .calculator-summary h2 {
+  margin: 12px 0 24px;
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 500;
+}
+.calculator-summary-values {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.calculator-summary-values > div {
+  display: grid;
+  gap: 6px;
+}
+.calculator-summary-values span {
+  color: #c7d0de;
+  font-size: 11px;
+}
+.calculator-summary-values strong {
+  font-size: 22px;
+  font-weight: 500;
+}
+.calculator-summary-arrow {
+  color: #dfbc70;
+  transform: rotate(45deg);
+}
 .public-site .project-card {
   border-radius: 13px;
   overflow: hidden;
@@ -1829,6 +1865,9 @@
 @media (max-width: 700px) {
   .public-site .section {
     padding-block: 66px;
+  }
+  .public-site .benefits-section {
+    padding-top: 96px;
   }
   .public-site .hero-layout {
     padding-top: 125px;
@@ -2244,6 +2283,18 @@
   }
 }
 @media (max-width: 500px) {
+  .public-site .benefits-intro h2 {
+    font-size: 33px;
+  }
+  .public-site .calculator-summary {
+    padding: 24px 20px;
+  }
+  .calculator-summary-values {
+    gap: 14px;
+  }
+  .calculator-summary-values strong {
+    font-size: 19px;
+  }
   .public-site .services-grid {
     grid-template-columns: 1fr;
     gap: 18px;

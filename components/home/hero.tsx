@@ -42,7 +42,7 @@ export function Hero() {
               gere sua própria energia e
             </motion.span>{' '}
             <motion.span className="hero-line" {...entry(0.4)}>
-              corte <em>até 85%</em> da conta de luz
+              economize <em>até 85%</em> da conta de luz
             </motion.span>
           </h1>
           <motion.p {...entry(0.52)}>

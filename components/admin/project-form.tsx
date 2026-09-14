@@ -317,8 +317,8 @@ export function ProjectForm({ initial }: { initial?: Project }) {
             />
           ) : (
             <div className="notice">
-              Salve a obra como rascunho para começar a enviar as fotos. Seus dados serão
-              preservados.
+              Preencha o título e envie as fotos. A obra será salva automaticamente como rascunho
+              para iniciar o envio, e seus dados serão preservados.
             </div>
           )}
         </section>

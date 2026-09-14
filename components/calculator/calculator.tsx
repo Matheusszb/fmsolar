@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { AnimatedMoney } from './animated-money';
 import { Ambient } from '@/components/ui/ambient';
 import dynamic from 'next/dynamic';
@@ -11,6 +11,7 @@ const Charts = dynamic(() => import('./charts'), {
   loading: () => <div className="skeleton" aria-label="Carregando gráficos" />,
 });
 export function Calculator({ initial }: { initial: string }) {
+  const resultsRef = useRef<HTMLDivElement>(null);
   const [value, setValue] = useState(initial);
   const [connection, setConnection] = useState('Monofásica');
   const [property, setProperty] = useState('Residencial');
@@ -37,6 +38,11 @@ export function Calculator({ initial }: { initial: string }) {
               try {
                 calculateSolar(parseCurrency(value));
                 setError('');
+                if (window.matchMedia('(max-width: 800px)').matches) {
+                  window.requestAnimationFrame(() => {
+                    resultsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  });
+                }
               } catch (e) {
                 setError(e instanceof Error ? e.message : 'Informe um valor válido.');
               }
@@ -130,7 +136,7 @@ export function Calculator({ initial }: { initial: string }) {
             </a>
           </div>
         </aside>
-        <div className="calculator-results">
+        <div className="calculator-results" ref={resultsRef}>
           {!result ? (
             <div className="empty-state">
               <CalculatorIcon size={44} />
@@ -199,6 +205,25 @@ export function Calculator({ initial }: { initial: string }) {
               manutenção, degradação, financiamento ou valor do dinheiro no tempo.
             </p>
           </div>
+          {result && (
+            <div className="calculator-summary" aria-label="Resumo da economia">
+              <span className="eyebrow dark">RESUMO DA SUA ECONOMIA</span>
+              <h2>
+                Economize <AnimatedMoney value={result.economiaMensal} /> por mês
+              </h2>
+              <div className="calculator-summary-values">
+                <div>
+                  <span>Conta antiga</span>
+                  <strong>{currency(result.contaMensal)}</strong>
+                </div>
+                <ArrowUpRight className="calculator-summary-arrow" size={20} />
+                <div>
+                  <span>Conta atual</span>
+                  <strong>{currency(result.novaConta)}</strong>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </Ambient>
     </section>

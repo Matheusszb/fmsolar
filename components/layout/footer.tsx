@@ -10,9 +10,7 @@ export function Footer() {
           <div>
             <Brand />
             <p>
-              Engenharia que transforma o sol
-              <br />
-              em liberdade para você.
+              Engenharia que transforma o sol em economia e liberdade.
             </p>
             <a
               href={company.instagramUrl}
