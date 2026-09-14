@@ -128,7 +128,7 @@ export function HomeSections() {
               <span>
                 Uma nova relação
                 <br />
-                com a energia.
+                {' '}com a energia.
               </span>
             </h2>
             <p>Transforme a luz que chega ao seu imóvel em possibilidades para o seu futuro.</p>
